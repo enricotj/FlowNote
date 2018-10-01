@@ -1,8 +1,3 @@
-# Keys
-/web/src/config/devKey.js
-/web/src/config/prodKey.js
-
-
 # Logs
 logs
 *.log

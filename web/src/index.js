@@ -1,19 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {Redirect, Route, BrowserRouter } from "react-router-dom";
 import './index.css';
+import { BrowserRouter } from 'react-router-dom'
+import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
-import Login from "./features/Login";
 
-const Root = () => (
+ReactDOM.render((
 	<BrowserRouter>
-		<div>
-			<Route path="/login" component={Login}/>
-			{/* <Route path="/app/home" component={Home}/> */}
-			<Redirect from="/" to="/login"/>
-		</div>
+		<App />
 	</BrowserRouter>
-);
-
-ReactDOM.render(<Root />, document.getElementById('root'));
+	), document.getElementById('root'));
 registerServiceWorker();
