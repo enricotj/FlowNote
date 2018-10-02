@@ -38,6 +38,7 @@ ul.NavBar {
 li {
 	float: left;
 	cursor: pointer;
+	font-family:"Lucida Sans Unicode";
 }
 
 li a {
@@ -52,11 +53,16 @@ li a:hover {
 	background-color: #111;
 }
 
+li.SignOut{
+	float: right;
+}
+
 div.AppName {
 	font-family:"Lucida Sans Unicode";
 	color: white;
+	cursor: default;
 	font-size: 24px;
-	padding: 2px 20px 2px 20px;
+	padding: 10px 20px 10px 20px;
 }
 
 div.SignInPrompt {
@@ -72,6 +78,8 @@ div.Loading {
 	padding: 100px;
 }
 
-li.SignOut{
-	float: right;
+div.Welcome {
+	font-family: "Lucida Sans Unicode";
+	font-size: 30px;
+	margin-left: 250px;
 }

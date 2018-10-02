@@ -1,0 +1,22 @@
+nav ul.noteNav {
+	height: calc(100% - 57px);
+	width: 250px;
+	position: fixed;
+	z-index: 1;
+	left: 0;
+	background-color: #111;
+	overflow: hidden;
+	overflow-y: scroll;
+	margin-top: 0px;
+	text-align: center;
+	padding-left: 0px;
+}
+
+nav ul.noteNav a {
+	float: center;
+	padding: 8px 8px 8px 8px;
+	text-decoration: none;
+	font-size: 25px;
+	color: #aaa;
+	display: block;
+}

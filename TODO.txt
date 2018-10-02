@@ -1,0 +1,17 @@
+TODO:
+-Note List
+	-UI (WIP)
+	-Firebase Read
+-New Note Button/Flow
+	-UI
+	-Firebase Write
+-Note Edit Pane
+	-UI
+	-Firebase Read
+	-Firebase Write
+-Checklist Edit Pane
+	-UI
+	-Firebase Read
+	-Firebase Write
+-Themes
+-Colors

@@ -4,6 +4,8 @@ import '../firebaseui-styling.global.css';
 import { app, base, fire } from '../base';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
+import NoteList from './NoteList';
+
 class App extends Component {
 	constructor() {
 		super();
@@ -31,7 +33,7 @@ class App extends Component {
 	}
 
 	render() {
-		if (this.state.loading){
+		if (this.state.loading) {
 			return (<div class="Loading"><b>Flow-Note is Loading...</b></div>);
 		}
 
@@ -48,7 +50,8 @@ class App extends Component {
 				</ul>
 				{this.state.signedIn ? 
 					(<div>
-						<h1>Welcome {app.auth().currentUser.displayName}</h1>
+						<NoteList></NoteList>
+						<div class="Welcome">Welcome {app.auth().currentUser.displayName}</div>
 					</div>) :
 					(<div>
 						<div class="SignInPrompt">Sign In</div>
