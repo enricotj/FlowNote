@@ -5,6 +5,7 @@ import { app, base, fire } from '../base';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 import NoteList from './NoteList';
+import Note from './Note';
 
 class App extends Component {
 	constructor() {
@@ -49,9 +50,9 @@ class App extends Component {
 						(<li class="SignOut"><a onClick={() => app.auth().signOut()}>Sign Out</a></li>) : (<div/>) }
 				</ul>
 				{this.state.signedIn ? 
-					(<div>
+					(<div class="SignedIn">
 						<NoteList></NoteList>
-						<div class="Welcome">Welcome {app.auth().currentUser.displayName}</div>
+						<Note></Note>
 					</div>) :
 					(<div>
 						<div class="SignInPrompt">Sign In</div>

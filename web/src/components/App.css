@@ -1,5 +1,6 @@
 .App {
 	text-align: center;
+	height: 100%;
 }
 
 .App-logo {
@@ -81,5 +82,9 @@ div.Loading {
 div.Welcome {
 	font-family: "Lucida Sans Unicode";
 	font-size: 30px;
-	margin-left: 250px;
+	margin-left: 400px;
+}
+
+div.SignedIn {
+	height: calc(100% - 57px);
 }

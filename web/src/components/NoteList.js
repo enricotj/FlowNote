@@ -3,17 +3,21 @@ import styles from './NoteList.css';
 import { app, base, fire } from '../base';
 
 class NoteList extends Component {
+
 	constructor() {
 		super()
 	}
 
 	render() {
+		const items = ["To-Do", "Work", "Finance", "Food", "Media", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"];
+		const list = items.map((item) =>
+			<a>{item}</a>
+		);
+
 		return (
 				<nav><ul class="noteNav">
-					<a>To-Do</a>
-					<a>Work</a>
-					<a>Finance</a>
-					<a>Food</a>
+					<a class="NewNote">✚</a>
+					{list}
 				</ul></nav>
 			);
 	}

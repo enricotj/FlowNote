@@ -1,9 +1,7 @@
 TODO:
 -Note List
-	-UI (WIP)
 	-Firebase Read
--New Note Button/Flow
-	-UI
+-New Note
 	-Firebase Write
 -Note Edit Pane
 	-UI
