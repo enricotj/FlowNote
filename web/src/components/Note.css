@@ -8,6 +8,15 @@ div.Note {
 	height: calc(100% - 16px);
 }
 
+div.NoteInner {
+	background-color: #666;
+	text-align: center;
+	color:#eee;
+	overflow: hidden;
+	padding: 8px 0px 8px 0px;
+	height: calc(100% - 16px);
+}
+
 input.Title {
 	background-color:#111;
 	color:#eee;

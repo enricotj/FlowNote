@@ -22,4 +22,4 @@ const base = Rebase.createClass(db);
 
 const fire = firebase;
 
-export { app, base, fire };
+export { app, base, fire, db };
