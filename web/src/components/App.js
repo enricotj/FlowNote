@@ -8,6 +8,8 @@ import NoteList from './NoteList';
 import Note from './Note';
 
 class App extends Component {
+	saveTimeout = 2;
+
 	constructor() {
 		super();
 		this.state = {
@@ -16,9 +18,9 @@ class App extends Component {
 			selectedNote: { title: "", body: "", id: "", author: "" },
 			loadedNotes: false,
 			saveTimer: null,
-			saveCounter: 0
+			saveCounter: 0,
+			notes: []
 		};
-		console.log(this.state);
 	}
 
 	uiAuthConfig = {
@@ -35,6 +37,9 @@ class App extends Component {
 	componentDidMount = () => {
 		app.auth().onAuthStateChanged(user => {
 			this.setState({ signedIn: !!user, loading:false });
+			if (this.state.signedIn) {
+				this.loadNotes();
+			}
 		});
 
 		let saveTimer = setInterval(this.saveTick, 1000);
@@ -43,6 +48,36 @@ class App extends Component {
 	
 	componentWillUnmount() {
 		this.clearInterval(this.state.saveTimer);
+	}
+
+	loadNotes = () => {
+		var docRef = db.collection("notes").where("author", "==", app.auth().currentUser.uid).orderBy("modTime", "desc").get()
+			.then((querySnapshot) => {
+				this.setState(prevState => ({
+					notes: []
+				}));
+				var first = true;
+				querySnapshot.forEach((doc) => {
+					let data = {
+						id: doc.id,
+						author: doc.data().author,
+						title: doc.data().title,
+						body: doc.data().body
+					}
+
+					if (first) {
+						this.onSelectNote(data);
+						first = false;
+					}
+
+					this.setState(prevState => ({
+						notes: [...prevState.notes, data]
+					}));
+				});
+			})
+			.catch(function(error) {
+				console.log("Error getting documents: ", error);
+			});
 	}
 
 	saveTick = () => {
@@ -57,9 +92,12 @@ class App extends Component {
 	}
 
 	saveNote = () => {
+		let saveCounter = 0;
+		this.setState({saveCounter});
 		db.collection("notes").doc(this.state.selectedNote.id).update({
 			title: this.state.selectedNote.title,
-			body: this.state.selectedNote.body
+			body: this.state.selectedNote.body,
+			modTime: fire.firestore.FieldValue.serverTimestamp()
 		})
 		.then(function() {
 			console.log("Note saved!")
@@ -70,6 +108,9 @@ class App extends Component {
 	}
 
 	onSelectNote = (note) => {
+		if (this.state.loadedNotes) {
+			this.saveNote();
+		}
 		let selectedNote = Object.assign({}, this.state.selectedNote);
 		selectedNote.id = note.id;
 		selectedNote.author = note.author;
@@ -81,19 +122,37 @@ class App extends Component {
 			var loadedNotes = true;
 			this.setState({loadedNotes});
 		}
+
+		this.refs.noteEditor.refs.titleField.focus();
 	}
 
 	onAddNote = () => {
-		db.collection("notes").add({
+		var ref = db.collection("notes").doc();
+		
+		var note = {
+			id: ref.id,
 			author: app.auth().currentUser.uid,
 			title: "",
-			body: ""
+			body: "",
+			modTime: fire.firestore.FieldValue.serverTimestamp()
+		};
+		
+		this.setState(prevState => ({
+			notes: [note, ...prevState.notes]
+		}));
+		
+		this.onSelectNote(note);
+
+		ref.set({
+			author: app.auth().currentUser.uid,
+			title: "",
+			body: "",
+			modTime: fire.firestore.FieldValue.serverTimestamp()
 		})
-		.then(function() {
+		.then(() => {
 			console.log("New note added!");
-			// TODO: refresh note list, select new note
 		})
-		.catch(function(error) {
+		.catch((error) => {
 			console.error("Error writing document: ", error);
 		});
 	}
@@ -103,8 +162,17 @@ class App extends Component {
 		selectedNote.title = event.target.value;
 		this.setState({selectedNote});
 
-		let saveCounter = 3;
+		let saveCounter = this.saveTimeout;
 		this.setState({saveCounter});
+
+		let notes = this.state.notes;
+		for (var i = 0; i < notes.length; i++) {
+			if (notes[i].id === selectedNote.id) {
+				notes[i].title = selectedNote.title;
+				break;
+			}
+		}
+		this.setState({notes});
 	}
 
 	onEditBody = (event) => {
@@ -112,33 +180,64 @@ class App extends Component {
 		selectedNote.body = event.target.value;
 		this.setState({selectedNote});
 
-		let saveCounter = 3;
+		let saveCounter = this.saveTimeout;
 		this.setState({saveCounter});
+	}
+
+	onDelete = () => {
+		var ref = db.collection("notes").doc(this.state.selectedNote.id).delete()
+		.then(() => {
+			console.log("Note deleted!");
+			this.loadNotes();
+		})
+		.catch((error) => {
+			console.error("Error deleting document: ", error);
+		});
 	}
 
 	render() {
 		if (this.state.loading) {
-			return (<div class="Loading"><b>Flow-Note is Loading...</b></div>);
+			return (<div className="Loading"><b>Flow-Note is Loading...</b></div>);
 		}
 
 		return (
 			<div className="App">
-				<ul class="NavBar">
-					<li><div class="AppName">Flow-Note</div></li>
-					{/*<li><a class="active" href="#home">Home</a></li>
-					<li><a href="#news">News</a></li>
-					<li><a href="#contact">Contact</a></li>
-					<li><a href="#about">About</a></li>*/}
-					{this.state.signedIn ? 
-						(<li class="SignOut"><a onClick={() => app.auth().signOut()}>Sign Out</a></li>) : (<div/>) }
-				</ul>
+			{this.state.signedIn ? 
+				(
+					<ul class="NavBar">
+						<li><div className="AppName">Flow-Note</div></li>
+						<li><a onClick={() => this.onDelete()}>Delete Note</a></li>
+						<li className="SignOut"><a onClick={() => app.auth().signOut()}>Sign Out</a></li>
+					</ul>
+				) :
+				(
+					<ul class="NavBar">
+						<li><div className="AppName">Flow-Note</div></li>
+						{/*<li><a class="active" href="#home">Home</a></li>
+						<li><a href="#news">News</a></li>
+						<li><a href="#contact">Contact</a></li>
+						<li><a href="#about">About</a></li>*/}
+					</ul>
+				)
+			}
 				{this.state.signedIn ? 
-					(<div class="SignedIn">
-						<NoteList onSelect={this.onSelectNote} onAdd={this.onAddNote}></NoteList>
-						<Note selected={this.state.selectedNote} onEditTitle={this.onEditTitle} onEditBody={this.onEditBody} loadedNotes={this.state.loadedNotes}/>
+					(<div className="SignedIn">
+						<NoteList
+							onSelect={this.onSelectNote}
+							onAdd={this.onAddNote}
+							notes={this.state.notes}
+							selectedNoteId={this.state.selectedNote.id}>
+						</NoteList>
+						<Note
+							ref="noteEditor"
+							selected={this.state.selectedNote} 
+							onEditTitle={this.onEditTitle}
+							onEditBody={this.onEditBody}
+							loadedNotes={this.state.loadedNotes}>
+						</Note>
 					</div>) :
 					(<div>
-						<div class="SignInPrompt">Sign In</div>
+						<div className="SignInPrompt">Sign In</div>
 						<StyledFirebaseAuth className={styles.firebaseUi} uiConfig={this.uiAuthConfig} firebaseAuth={app.auth()}/>
 					</div>)}
 			</div>

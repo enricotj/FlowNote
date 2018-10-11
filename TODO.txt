@@ -1,15 +1,9 @@
-TODO:
--Note List
-	-Firebase Read
--New Note
-	-Firebase Write
--Note Edit Pane
-	-UI
-	-Firebase Read
-	-Firebase Write
--Checklist Edit Pane
-	-UI
-	-Firebase Read
-	-Firebase Write
--Themes
--Colors
+TODO (v1):
+- Add button to delete note
+
+FEATURES:
+- Notes (v1)
+- Checklists (v2)
+- Color Coding Pages
+- Google Calendar Integration
+- Flow Charts

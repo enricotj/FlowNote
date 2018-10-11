@@ -1,6 +1,7 @@
 .App {
 	text-align: center;
 	height: 100%;
+	width: 100%;
 }
 
 .App-logo {
@@ -54,11 +55,11 @@ li a:hover {
 	background-color: #111;
 }
 
-li.SignOut{
+.SignOut{
 	float: right;
 }
 
-div.AppName {
+.AppName {
 	font-family:"Lucida Sans Unicode";
 	color: white;
 	cursor: default;
@@ -66,25 +67,25 @@ div.AppName {
 	padding: 10px 20px 10px 20px;
 }
 
-div.SignInPrompt {
+.SignInPrompt {
 	font-family:"Lucida Sans Unicode";
 	font-size: 30px;
 	padding: 20px 20px 20px 20px;
 }
 
-div.Loading {
+.Loading {
 	text-align: center;
 	font-family:"Lucida Sans Unicode";
 	font-size: 30px;
 	padding: 100px;
 }
 
-div.Welcome {
+.Welcome {
 	font-family: "Lucida Sans Unicode";
 	font-size: 30px;
 	margin-left: 400px;
 }
 
-div.SignedIn {
+.SignedIn {
 	height: calc(100% - 57px);
 }

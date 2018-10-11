@@ -1,48 +1,47 @@
 div.Note {
 	margin-left: 400px;
 	background-color: #666;
-	text-align: center;
+	text-align: left;
 	color:#eee;
 	overflow: hidden;
-	padding: 8px 0px 8px 0px;
-	height: calc(100% - 16px);
+	padding: 4px 0px 8px 0px;
+	height: calc(100% - 12px);
+	width: calc(100% - 400px);
 }
 
 div.NoteInner {
 	background-color: #666;
-	text-align: center;
+	text-align: left;
 	color:#eee;
 	overflow: hidden;
-	padding: 8px 0px 8px 0px;
-	height: calc(100% - 16px);
+	height: 100%;
 }
 
 input.Title {
 	background-color:#111;
 	color:#eee;
 
-	padding: 8px;
+	margin-left: 4px;
+	margin-bottom: 4px;
+
 	font-size: 20px;
 	font-family:"Lucida Sans Unicode";
-	float: left;
-	width: calc(100% - 32px);
-	margin-left: 8px;
-	margin-bottom: 8px;
+
+	width: calc(100% - 14px);
 }
 
 textarea.Body {
 	background-color:#111;
 	color:#eee;
 
-	padding: 8px;
+	margin-left: 4px;
+
 	font-size: 16px;
 	font-family:"Lucida Sans Unicode";
-	margin-left: 8px;
-	margin-bottom: 8px;
 	overflow: auto;
-	word-wrap: none;
-	width: calc(100% - 32px);
-	min-height: 100px;
-	height: calc(100% - 76px);
 	resize: none;
+
+	width: calc(100% - 16px);
+	min-height: 100px;
+	height: calc(100% - 36px);
 }
