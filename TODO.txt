@@ -1,5 +1,11 @@
 TODO (v1):
-- Add button to delete note
+- Predictive note deltion
+- Clear selected note data on note deletion
+- Move add-note button to nav-bar
+
+- Make/Find and use icons for add/delete buttons
+- Add saving/saved status indicator/icon
+- Add error handling for firebase (try to reload notes, pop toast)
 
 FEATURES:
 - Notes (v1)
@@ -7,3 +13,21 @@ FEATURES:
 - Color Coding Pages
 - Google Calendar Integration
 - Flow Charts
+
+
+Note Features:
+- Color Code
+- Pin
+- Share
+- Tags
+
+Checklist Features:
+- 
+
+Metric Tracking Features:
+- 
+
+
+
+Flow Chart Features:
+- 

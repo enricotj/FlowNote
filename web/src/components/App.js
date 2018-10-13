@@ -193,6 +193,23 @@ class App extends Component {
 		.catch((error) => {
 			console.error("Error deleting document: ", error);
 		});
+
+		let newNotes = this.state.notes;
+		var deleted = false;
+		for (var i = 0; i < newNotes.length; i++) {
+			if (newNotes[i].id === this.state.selectedNote.id) {
+				newNotes.splice(i, 1);
+				deleted = true;
+				break;
+			}
+		}
+
+		if (deleted) {
+			this.setState(prevState => ({
+				notes: newNotes
+			}));
+			this.onSelectNote(newNotes[0]);
+		}
 	}
 
 	render() {
