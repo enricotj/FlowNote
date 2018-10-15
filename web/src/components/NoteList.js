@@ -40,7 +40,6 @@ class NoteList extends Component {
 
 		return (
 				<nav><ul class="noteNav">
-					<a key="add_key" class="NewNote" onClick={() => this.props.onAdd()}>✚</a>
 					{list}
 				</ul></nav>
 			);

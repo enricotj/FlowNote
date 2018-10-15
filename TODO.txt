@@ -1,6 +1,4 @@
 TODO (v1):
-- Predictive note deltion
-- Clear selected note data on note deletion
 - Move add-note button to nav-bar
 
 - Make/Find and use icons for add/delete buttons

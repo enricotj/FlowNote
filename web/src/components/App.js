@@ -105,6 +105,8 @@ class App extends Component {
 		.catch(function(error) {
 			console.log("Error saving note: ", error);
 		});
+
+
 	}
 
 	onSelectNote = (note) => {
@@ -123,7 +125,7 @@ class App extends Component {
 			this.setState({loadedNotes});
 		}
 
-		this.refs.noteEditor.refs.titleField.focus();
+		//this.refs.noteEditor.refs.titleField.focus();
 	}
 
 	onAddNote = () => {
@@ -182,39 +184,51 @@ class App extends Component {
 
 		let saveCounter = this.saveTimeout;
 		this.setState({saveCounter});
-	}
 
-	onDelete = () => {
-		var ref = db.collection("notes").doc(this.state.selectedNote.id).delete()
-		.then(() => {
-			console.log("Note deleted!");
-			this.loadNotes();
-		})
-		.catch((error) => {
-			console.error("Error deleting document: ", error);
-		});
-
-		let newNotes = this.state.notes;
-		var deleted = false;
-		for (var i = 0; i < newNotes.length; i++) {
-			if (newNotes[i].id === this.state.selectedNote.id) {
-				newNotes.splice(i, 1);
-				deleted = true;
+		let notes = this.state.notes;
+		for (var i = 0; i < notes.length; i++) {
+			if (notes[i].id === selectedNote.id) {
+				notes[i].body = selectedNote.body;
 				break;
 			}
 		}
+		this.setState({notes});
+	}
 
-		if (deleted) {
-			this.setState(prevState => ({
-				notes: newNotes
-			}));
-			this.onSelectNote(newNotes[0]);
+	onDelete = () => {
+		var id = this.state.selectedNote.id;
+		if (id.length !== 0) {
+			var ref = db.collection("notes").doc().delete()
+			.then(() => {
+				console.log("Note deleted!");
+				this.loadNotes();
+			})
+			.catch((error) => {
+				console.error("Error deleting document: ", error);
+			});
+
+			let newNotes = this.state.notes;
+			var deleted = false;
+			for (var i = 0; i < newNotes.length; i++) {
+				if (newNotes[i].id === id) {
+					newNotes.splice(i, 1);
+					deleted = true;
+					break;
+				}
+			}
+
+			if (deleted) {
+				this.setState(prevState => ({
+					notes: newNotes
+				}));
+				this.onSelectNote(newNotes[0]);
+			}
 		}
 	}
 
 	render() {
 		if (this.state.loading) {
-			return (<div className="Loading"><b>Flow-Note is Loading...</b></div>);
+			return (<div className="Loading"><b>Flow Note is Loading...</b></div>);
 		}
 
 		return (
@@ -222,14 +236,15 @@ class App extends Component {
 			{this.state.signedIn ? 
 				(
 					<ul class="NavBar">
-						<li><div className="AppName">Flow-Note</div></li>
-						<li><a onClick={() => this.onDelete()}>Delete Note</a></li>
+						<li><div className="AppName">Flow Note</div></li>
+						<li><a onClick={() => this.onAddNote()}>✚</a></li>
+						<li><a onClick={() => this.onDelete()}>🗑</a></li>
 						<li className="SignOut"><a onClick={() => app.auth().signOut()}>Sign Out</a></li>
 					</ul>
 				) :
 				(
 					<ul class="NavBar">
-						<li><div className="AppName">Flow-Note</div></li>
+						<li><div className="AppName">Flow Note</div></li>
 						{/*<li><a class="active" href="#home">Home</a></li>
 						<li><a href="#news">News</a></li>
 						<li><a href="#contact">Contact</a></li>
