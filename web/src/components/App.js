@@ -7,11 +7,27 @@ import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import NoteList from './NoteList';
 import Note from './Note';
 
+import { connect } from 'react-redux';
+import { fetchNotes, createNote } from "../actions/noteActions";
+
+const mapStateToProps = (store) => {
+	return {
+		rnotes: store.notes.notes
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchNotes: () => dispatch(fetchNotes()),
+		createNote: (note) => dispatch(createNote(note))
+	}
+};
+
 class App extends Component {
 	saveTimeout = 2;
 
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			signedIn: false,
 			loading: true,
@@ -51,7 +67,7 @@ class App extends Component {
 	}
 
 	loadNotes = () => {
-		var docRef = db.collection("notes").where("author", "==", app.auth().currentUser.uid).orderBy("modTime", "desc").get()
+		db.collection("notes").where("author", "==", app.auth().currentUser.uid).orderBy("modTime", "desc").get()
 			.then((querySnapshot) => {
 				this.setState(prevState => ({
 					notes: []
@@ -105,8 +121,6 @@ class App extends Component {
 		.catch(function(error) {
 			console.log("Error saving note: ", error);
 		});
-
-
 	}
 
 	onSelectNote = (note) => {
@@ -198,7 +212,7 @@ class App extends Component {
 	onDelete = () => {
 		var id = this.state.selectedNote.id;
 		if (id.length !== 0) {
-			var ref = db.collection("notes").doc().delete()
+			db.collection("notes").doc(id).delete()
 			.then(() => {
 				console.log("Note deleted!");
 				this.loadNotes();
@@ -277,4 +291,7 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(App);

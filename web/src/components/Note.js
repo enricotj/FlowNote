@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import styles from './Note.css';
-import { app, base, fire } from '../base';
+import './Note.css';
 
 class Note extends Component {
-
-	constructor(props) {
-		super(props);
-	}
-
 	render() {
 		return (<div class="Note">
 			{!this.props.loadedNotes ? 
