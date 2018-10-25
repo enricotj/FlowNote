@@ -24,7 +24,7 @@ export default function reducer(state={
 				return {...state, fetching: false, error: action.payload};
 			}
 			case "FETCH_NOTES_SUCCESS": {
-				return {...state, notes: action.payload, fetching: false, fetched: true};
+				return {...state, notes: action.payload, fetching: false, fetched: true, selected: 0};
 			}
 
 			case "SELECT_NOTE": {

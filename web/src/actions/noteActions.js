@@ -54,8 +54,6 @@ export function createNote() {
 
 export function updateNote(note) {
 	return function(dispatch) {
-		dispatch({type: "UPDATE_NOTE", payload: note});
-
 		db.collection("notes").doc(note.id).update({
 			title: note.title,
 			body: note.body,
@@ -68,6 +66,12 @@ export function updateNote(note) {
 			console.log("Error updating note: ", error);
 			dispatch({type: "UPDATE_NOTE_ERROR", payload: error});
 		});
+	};
+}
+
+export function updateNoteLocally(note) {
+	return function(dispatch) {
+		dispatch({type: "UPDATE_NOTE", payload: note});
 	};
 }
 

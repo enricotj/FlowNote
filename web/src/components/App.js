@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
 import styles from './App.css';
 import '../firebaseui-styling.global.css';
-import { app, db, fire } from '../base';
+import { app, fire } from '../base';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 
 import NoteList from './NoteList';
 import Note from './Note';
 
 import { connect } from 'react-redux';
-import { fetchNotes, createNote } from "../actions/noteActions";
+import { fetchNotes, createNote, updateNote, deleteNote, selectNote } from "../actions/noteActions";
 
 const mapStateToProps = (store) => {
 	return {
-		rnotes: store.notes.notes
+		fetchedNotes: store.notes.fetched,
+		notes: store.notes.notes,
+		selectedNote: store.notes.selected
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchNotes: () => dispatch(fetchNotes()),
-		createNote: (note) => dispatch(createNote(note))
+		createNote: () => dispatch(createNote()),
+		updateNote: (note) => dispatch(updateNote(note)),
+		deleteNote: (noteId) => dispatch(deleteNote(noteId)),
+		selectNote: (index) => dispatch(selectNote(index)),
 	}
 };
 
@@ -31,11 +36,6 @@ class App extends Component {
 		this.state = {
 			signedIn: false,
 			loading: true,
-			selectedNote: { title: "", body: "", id: "", author: "" },
-			loadedNotes: false,
-			saveTimer: null,
-			saveCounter: 0,
-			notes: []
 		};
 	}
 
@@ -54,195 +54,46 @@ class App extends Component {
 		app.auth().onAuthStateChanged(user => {
 			this.setState({ signedIn: !!user, loading:false });
 			if (this.state.signedIn) {
-				this.loadNotes();
+				this.props.fetchNotes();
 			}
 		});
-
-		let saveTimer = setInterval(this.saveTick, 1000);
-		this.setState({saveTimer});
-	}
-	
-	componentWillUnmount() {
-		this.clearInterval(this.state.saveTimer);
-	}
-
-	loadNotes = () => {
-		db.collection("notes").where("author", "==", app.auth().currentUser.uid).orderBy("modTime", "desc").get()
-			.then((querySnapshot) => {
-				this.setState(prevState => ({
-					notes: []
-				}));
-				var first = true;
-				querySnapshot.forEach((doc) => {
-					let data = {
-						id: doc.id,
-						author: doc.data().author,
-						title: doc.data().title,
-						body: doc.data().body
-					}
-
-					if (first) {
-						this.onSelectNote(data);
-						first = false;
-					}
-
-					this.setState(prevState => ({
-						notes: [...prevState.notes, data]
-					}));
-				});
-			})
-			.catch(function(error) {
-				console.log("Error getting documents: ", error);
-			});
-	}
-
-	saveTick = () => {
-		let saveCounter = this.state.saveCounter;
-		if (saveCounter > 0) {
-			saveCounter--;
-			if (saveCounter === 0) {
-				this.saveNote();
-			}
-		}
-		this.setState({saveCounter});
 	}
 
 	saveNote = () => {
-		let saveCounter = 0;
-		this.setState({saveCounter});
-		db.collection("notes").doc(this.state.selectedNote.id).update({
-			title: this.state.selectedNote.title,
-			body: this.state.selectedNote.body,
-			modTime: fire.firestore.FieldValue.serverTimestamp()
-		})
-		.then(function() {
-			console.log("Note saved!")
-		})
-		.catch(function(error) {
-			console.log("Error saving note: ", error);
-		});
+		this.props.updateNote(this.props.notes[this.props.selectedNote]);
 	}
 
 	onSelectNote = (note) => {
-		if (this.state.loadedNotes) {
-			this.saveNote();
+		if (this.props.fetchedNotes && this.state.saveCounter > 0) {
+			var selectedNoteId = this.props.notes[this.props.selectedNote];
+			if (selectedNoteId !== note.id) {
+				this.saveNote();
+			}
 		}
-		let selectedNote = Object.assign({}, this.state.selectedNote);
-		selectedNote.id = note.id;
-		selectedNote.author = note.author;
-		selectedNote.title = note.title;
-		selectedNote.body = note.body;
-		this.setState({selectedNote});
 
-		if (!this.state.loadedNotes) {
-			var loadedNotes = true;
-			this.setState({loadedNotes});
+		for (var i = 0; i < this.props.notes.length; i++) {
+			if (this.props.notes[i].id === note.id) {
+				this.props.selectNote(i);
+				break;
+			}
 		}
 
 		//this.refs.noteEditor.refs.titleField.focus();
 	}
 
-	onAddNote = () => {
-		var ref = db.collection("notes").doc();
-		
-		var note = {
-			id: ref.id,
-			author: app.auth().currentUser.uid,
-			title: "",
-			body: "",
-			modTime: fire.firestore.FieldValue.serverTimestamp()
-		};
-		
-		this.setState(prevState => ({
-			notes: [note, ...prevState.notes]
-		}));
-		
-		this.onSelectNote(note);
-
-		ref.set({
-			author: app.auth().currentUser.uid,
-			title: "",
-			body: "",
-			modTime: fire.firestore.FieldValue.serverTimestamp()
-		})
-		.then(() => {
-			console.log("New note added!");
-		})
-		.catch((error) => {
-			console.error("Error writing document: ", error);
-		});
-	}
-
-	onEditTitle = (event) => {
-		let selectedNote = Object.assign({}, this.state.selectedNote);
-		selectedNote.title = event.target.value;
-		this.setState({selectedNote});
-
-		let saveCounter = this.saveTimeout;
-		this.setState({saveCounter});
-
-		let notes = this.state.notes;
-		for (var i = 0; i < notes.length; i++) {
-			if (notes[i].id === selectedNote.id) {
-				notes[i].title = selectedNote.title;
-				break;
-			}
-		}
-		this.setState({notes});
-	}
-
-	onEditBody = (event) => {
-		let selectedNote = Object.assign({}, this.state.selectedNote);
-		selectedNote.body = event.target.value;
-		this.setState({selectedNote});
-
-		let saveCounter = this.saveTimeout;
-		this.setState({saveCounter});
-
-		let notes = this.state.notes;
-		for (var i = 0; i < notes.length; i++) {
-			if (notes[i].id === selectedNote.id) {
-				notes[i].body = selectedNote.body;
-				break;
-			}
-		}
-		this.setState({notes});
-	}
-
-	onDelete = () => {
-		var id = this.state.selectedNote.id;
-		if (id.length !== 0) {
-			db.collection("notes").doc(id).delete()
-			.then(() => {
-				console.log("Note deleted!");
-				this.loadNotes();
-			})
-			.catch((error) => {
-				console.error("Error deleting document: ", error);
-			});
-
-			let newNotes = this.state.notes;
-			var deleted = false;
-			for (var i = 0; i < newNotes.length; i++) {
-				if (newNotes[i].id === id) {
-					newNotes.splice(i, 1);
-					deleted = true;
-					break;
-				}
-			}
-
-			if (deleted) {
-				this.setState(prevState => ({
-					notes: newNotes
-				}));
-				this.onSelectNote(newNotes[0]);
-			}
-		}
+	onDeleteNote = () => {
+		var id = this.props.notes[this.props.selectedNote].id;
+		this.props.deleteNote(id);
 	}
 
 	render() {
 		if (this.state.loading) {
 			return (<div className="Loading"><b>Flow Note is Loading...</b></div>);
+		}
+
+		var selectedNote = { id: "", title: "", body: "" };
+		if (this.props.fetchedNotes) {
+			selectedNote = this.props.notes[this.props.selectedNote];
 		}
 
 		return (
@@ -251,8 +102,8 @@ class App extends Component {
 				(
 					<ul class="NavBar">
 						<li><div className="AppName">Flow Note</div></li>
-						<li><a onClick={() => this.onAddNote()}>✚</a></li>
-						<li><a onClick={() => this.onDelete()}>🗑</a></li>
+						<li><a onClick={() => this.props.createNote()}>✚</a></li>
+						<li><a onClick={() => this.onDeleteNote()}>🗑</a></li>
 						<li className="SignOut"><a onClick={() => app.auth().signOut()}>Sign Out</a></li>
 					</ul>
 				) :
@@ -271,16 +122,10 @@ class App extends Component {
 						<NoteList
 							onSelect={this.onSelectNote}
 							onAdd={this.onAddNote}
-							notes={this.state.notes}
-							selectedNoteId={this.state.selectedNote.id}>
+							notes={this.props.notes}
+							selectedNoteId={selectedNote.id}>
 						</NoteList>
-						<Note
-							ref="noteEditor"
-							selected={this.state.selectedNote} 
-							onEditTitle={this.onEditTitle}
-							onEditBody={this.onEditBody}
-							loadedNotes={this.state.loadedNotes}>
-						</Note>
+						<Note ref="noteEditor"></Note>
 					</div>) :
 					(<div>
 						<div className="SignInPrompt">Sign In</div>
