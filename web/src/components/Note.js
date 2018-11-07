@@ -73,18 +73,29 @@ class Note extends Component {
 
 	render() {
 		var selectedNote = { id: "", title: "", body: "" };
-		if (this.props.fetchedNotes) {
+		var enabled = (this.props.selectedNote >= 0 && this.props.notes.length > 0);
+		if (this.props.fetchedNotes && enabled) {
 			selectedNote = this.props.notes[this.props.selectedNote];
 		}
 
-		return (<div class="Note">
-			{!this.props.fetchedNotes ?
-				(<div class="Loading"><b>Loading...</b></div>) :
-				(<div class="NoteInner">
-					<input class="Title" name="Title" type="text" ref="titleField" value={selectedNote.title} onChange={this.onEditTitle}/>
-					<textarea class="Body" name="Body" value={selectedNote.body} onChange={this.onEditBody}/>
-				</div>)}
-			</div>);
+		if (enabled) {
+			return (<div class="Note">
+				{!this.props.fetchedNotes ?
+					(<div class="Loading"><b>Loading...</b></div>) :
+					(<div class="NoteInner">
+						<input class="Title" name="Title" type="text" ref="titleField" value={selectedNote.title} onChange={this.onEditTitle}/>
+						<textarea class="Body" name="Body" value={selectedNote.body} onChange={this.onEditBody}/>
+					</div>)}
+				</div>);
+		}
+		else {
+			return (<div class="Note">
+				{!this.props.fetchedNotes ?
+					(<div class="Loading"><b>Loading...</b></div>) :
+					(<div class="NoteInner">
+					</div>)}
+				</div>);
+		}
 	}
 }
 

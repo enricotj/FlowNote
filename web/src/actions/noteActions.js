@@ -15,7 +15,10 @@ export function fetchNotes() {
 					noteData.push(data);
 				});
 				dispatch({type: "FETCH_NOTES_SUCCESS", payload: noteData});
-				dispatch({type: "SELECT_NOTE", payload: 0});
+
+				if (noteData.length > 0) {
+					dispatch({type: "SELECT_NOTE", payload: 0});
+				}
 			})
 			.catch((error) => {
 				dispatch({type: "FETCH_NOTES_ERROR", payload: error});

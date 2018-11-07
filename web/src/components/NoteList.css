@@ -4,7 +4,7 @@ nav ul.noteNav {
 	position: fixed;
 	z-index: 1;
 	left: 0;
-	background-color: #111;
+	background-color: #182438;
 	overflow: hidden;
 	overflow-y: scroll;
 	margin-top: 0px;
@@ -19,12 +19,13 @@ nav ul.noteNav a {
 	text-decoration: none;
 	font-size: 20px;
 	font-family:"Lucida Sans Unicode";
-	color: #aaa;
+	color: #cbd9f0;
 	display: block;
 	cursor: pointer;
 	border-style: none none solid none;
 	border-width: 1;
-	border-color: #888;
+	border-color: #346DD8;
+	background-color: #1c3462;
 	overflow: hidden;
 	white-space: nowrap;
 	word-wrap: nowrap;
@@ -32,19 +33,21 @@ nav ul.noteNav a {
 }
 
 nav ul.noteNav a:hover {
-	color: #fff;
-	background-color: #333;
+	color: #cbd9f0;
+	background-color: #264582;
 }
 
 nav ul.noteNav a.selectedNote {
-	color: #ddd;
-	background-color: #244;
+	color: #cbd9f0;
+	background-color: #335EB2;
 }
 
+/*
 nav ul.noteNav a.selectedNote:hover {
-	color: #fff;
-	background-color: #255;
+	color: #cbd9f0;
+	background-color: #335EB2;
 }
+
 
 nav ul.noteNav a.NewNote {
 	color: #555;
@@ -55,3 +58,4 @@ nav ul.noteNav a.NewNote:hover {
 	color: #000;
 	background-color: #ccc;
 }
+*/

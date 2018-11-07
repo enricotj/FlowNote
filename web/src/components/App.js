@@ -82,8 +82,10 @@ class App extends Component {
 	}
 
 	onDeleteNote = () => {
-		var id = this.props.notes[this.props.selectedNote].id;
-		this.props.deleteNote(id);
+		if (this.props.selectedNote >= 0 && this.props.notes.length > 0) {
+			var id = this.props.notes[this.props.selectedNote].id;
+			this.props.deleteNote(id);
+		}
 	}
 
 	render() {
@@ -92,7 +94,7 @@ class App extends Component {
 		}
 
 		var selectedNote = { id: "", title: "", body: "" };
-		if (this.props.fetchedNotes) {
+		if (this.props.fetchedNotes && this.props.selectedNote >= 0 && this.props.notes.length > 0) {
 			selectedNote = this.props.notes[this.props.selectedNote];
 		}
 
