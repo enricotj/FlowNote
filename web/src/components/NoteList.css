@@ -5,8 +5,8 @@ nav ul.noteNav {
 	z-index: 1;
 	left: 0;
 	background-color: #182438;
-	overflow: hidden;
-	overflow-y: scroll;
+	overflow: auto;
+	overflow-y: auto;
 	margin-top: 0px;
 	text-align: center;
 	padding-left: 0px;

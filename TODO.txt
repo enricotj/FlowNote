@@ -1,31 +1,18 @@
-TODO (v1):
-- Move add-note button to nav-bar
+Refactoring:
+- Loading Page
+- Flexbox Grid Dependency
+- Move Loading and SignedIn State to Redux Store
+- Move SaveCounter State to Redux Store (to use in NoteList)
+- Landing Page
+- Signed In Page Component
+	- NavBar Component
+	- NEED BETTER LAYOUT
 
-- Make/Find and use icons for add/delete buttons
-- Add saving/saved status indicator/icon
-- Add error handling for firebase (try to reload notes, pop toast)
+Core Features:
+- Notes
+- Checklists
+- Graphs/Dashboards
 
-FEATURES:
-- Notes (v1)
-- Checklists (v2)
-- Color Coding Pages
-- Google Calendar Integration
+Other Features:
 - Flow Charts
-
-
-Note Features:
-- Color Code
-- Pin
-- Share
-- Tags
-
-Checklist Features:
-- 
-
-Metric Tracking Features:
-- 
-
-
-
-Flow Chart Features:
-- 
+- Freehand Drawings
