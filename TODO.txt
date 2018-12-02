@@ -1,12 +1,23 @@
 Refactoring:
-- Loading Page
 - Flexbox Grid Dependency
 - Move Loading and SignedIn State to Redux Store
+- Loading Page
 - Move SaveCounter State to Redux Store (to use in NoteList)
 - Landing Page
 - Signed In Page Component
 	- NavBar Component
 	- NEED BETTER LAYOUT
+
+Security:
+- Encryption
+
+Responsiveness and Feedback:
+- Saving/Saved state UI indicator
+- Firebase data change listener/polling for multi-device editing
+
+Error Handling:
+- Retry logic for firebase CRUD operations
+- Toast when retries fail
 
 Core Features:
 - Notes
