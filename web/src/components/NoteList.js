@@ -7,14 +7,23 @@ import { updateNote, selectNote } from "../actions/noteActions";
 class NoteItem extends Component {
 	render () {
 		var note = this.props.note;
-		var selectedClass = "";
+		var selectedClass = "flex-item";
 		if (note.id === this.props.selectedNoteId) {
-			selectedClass = "selectedNote";
+			//selectedClass = "selectedNote";
+			selectedClass += " flex-selected";
+		}
+
+		var text = note.body.split('\n')[0];
+		if (!text)
+		{
+			text = "<Untitled>";
 		}
 
 		return (
 				<a class={selectedClass} onClick={() => {this.props.onSelect(note);}}>
-					{note.title}
+					{
+						text
+					}
 				</a>
 			);
 	}
@@ -37,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 class NoteList extends Component {
 
 	onSelectNote = (note) => {
-		if (this.props.notes) {
+		if (this.props.notes && this.props.selectedNote > 0) {
 			var selectedNoteId = this.props.notes[this.props.selectedNote];
 			if (selectedNoteId !== note.id) {
 				this.props.updateNote(this.props.notes[this.props.selectedNote]);
@@ -62,7 +71,7 @@ class NoteList extends Component {
 		);
 
 		return (
-				<nav><ul class="noteNav">
+				<nav><ul class="flex-container">
 					{list}
 				</ul></nav>
 			);

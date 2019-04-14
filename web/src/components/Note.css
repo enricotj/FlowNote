@@ -1,12 +1,18 @@
 div.Note {
-	margin-left: 400px;
 	background-color: #182438;
-	text-align: left;
 	color: #cbd9f0;
+	text-align: left;
 	overflow: hidden;
-	padding: 4px 0px 8px 0px;
-	height: calc(100% - 12px);
-	width: calc(100% - 400px);
+	padding: 0;
+	margin: 0;
+	width: 100%;
+
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
 }
 
 div.NoteInner {
@@ -15,6 +21,7 @@ div.NoteInner {
 	color: #cbd9f0;
 	overflow: hidden;
 	height: 100%;
+	width: 100%;
 }
 
 input.Title {
@@ -31,17 +38,23 @@ input.Title {
 }
 
 textarea.Body {
-	background-color: #1c3462;
+	/*background-color: #1c3462;*/
+	background-color: #182438;
 	color: #cbd9f0;
-
-	margin-left: 4px;
+	border-color: #346DD8;
 
 	font-size: 16px;
 	font-family:"Lucida Sans Unicode";
 	overflow: auto;
 	resize: none;
 
-	width: calc(100% - 16px);
-	min-height: 100px;
-	height: calc(100% - 50px);
+	outline: none;
+	border-style: solid;
+
+	border-width: 0px 0px 0px 1px;
+	padding: 16px 16px 16px 16px;
+
+	width: calc(100% - 34px);
+	/*height: calc(100% - 50px);*/
+	height: calc(100% - 32px);
 }

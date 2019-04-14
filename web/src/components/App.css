@@ -88,5 +88,10 @@ li a:hover {
 }
 
 .SignedIn {
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
 	height: calc(100% - 57px);
+	width: auto;
 }

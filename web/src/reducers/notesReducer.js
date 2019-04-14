@@ -2,7 +2,6 @@
 note object:
 {
 	id: null,
-	title: null,
 	body: null,
 }
 */
@@ -24,7 +23,7 @@ export default function reducer(state={
 				return {...state, fetching: false, error: action.payload};
 			}
 			case "FETCH_NOTES_SUCCESS": {
-				return {...state, notes: action.payload, fetching: false, fetched: true, selected: 0};
+				return {...state, notes: action.payload, fetching: false, fetched: true};
 			}
 
 			case "SELECT_NOTE": {
@@ -32,7 +31,7 @@ export default function reducer(state={
 			}
 
 			case "CREATE_NOTE": {
-				return {...state, notes: [{id: action.payload, title: "", body: ""}, ...state.notes], selected: 0};
+				return {...state, notes: [{id: action.payload, body: ""}, ...state.notes], selected: 0};
 			}
 			case "CREATE_NOTE_ERROR": {
 				return {...state, error: action.payload};

@@ -1,61 +1,47 @@
-nav ul.noteNav {
-	height: calc(100% - 57px);
-	width: 400px;
-	position: fixed;
-	z-index: 1;
-	left: 0;
+.flex-container {
 	background-color: #182438;
+	padding: 0;
+	margin: 0;
 	overflow: auto;
 	overflow-y: auto;
-	margin-top: 0px;
-	text-align: center;
-	padding-left: 0px;
-	padding-right: 0px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	align-content: flex-start;
+
+	height: 100%;
+	width: 256px;
 }
 
-nav ul.noteNav a {
-	float: center;
-	padding: 8px 8px 8px 8px;
+.flex-item {
+	width: calc(100% - 16px);
+	height: 32px;
+	min-height: 32px;
+	padding: 8px;
+	margin: 0px;
+
+	text-align: left;
 	text-decoration: none;
+	text-overflow: ellipsis;
 	font-size: 20px;
 	font-family:"Lucida Sans Unicode";
 	color: #cbd9f0;
-	display: block;
 	cursor: pointer;
-	border-style: none none solid none;
-	border-width: 1;
-	border-color: #346DD8;
-	background-color: #1c3462;
+	border-bottom: 1px solid #346DD8;
+	background-color: #182438;
 	overflow: hidden;
 	white-space: nowrap;
-	word-wrap: nowrap;
-	min-height: 31px;
+	word-wrap: normal;
 }
 
-nav ul.noteNav a:hover {
+.flex-item:hover {
 	color: #cbd9f0;
 	background-color: #264582;
 }
 
-nav ul.noteNav a.selectedNote {
+.flex-selected {
 	color: #cbd9f0;
 	background-color: #335EB2;
 }
-
-/*
-nav ul.noteNav a.selectedNote:hover {
-	color: #cbd9f0;
-	background-color: #335EB2;
-}
-
-
-nav ul.noteNav a.NewNote {
-	color: #555;
-	background-color: #eee;
-}
-
-nav ul.noteNav a.NewNote:hover {
-	color: #000;
-	background-color: #ccc;
-}
-*/

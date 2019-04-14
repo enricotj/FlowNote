@@ -1,18 +1,18 @@
+CURRENT:
+- Saving/Saved state UI indicator
+
+###################################################################################################
+
 Refactoring:
-- Flexbox Grid Dependency
 - Move Loading and SignedIn State to Redux Store
-- Loading Page
-- Move SaveCounter State to Redux Store (to use in NoteList)
-- Landing Page
-- Signed In Page Component
-	- NavBar Component
-	- NEED BETTER LAYOUT
+- Change Loading Page Look
+- Prettier Landing Page
+- Centered Loading Element for Note-List area after sign-in.
 
 Security:
-- Encryption
+- End-to-End Encryption
 
 Responsiveness and Feedback:
-- Saving/Saved state UI indicator
 - Firebase data change listener/polling for multi-device editing
 
 Error Handling:
@@ -21,9 +21,15 @@ Error Handling:
 
 Core Features:
 - Notes
+	- Markdown
+- Categories
+- Search
 - Checklists
-- Graphs/Dashboards
+- Time Tracker
 
 Other Features:
+- Google Calendar Integration
+- Graph/Dashboard Support
 - Flow Charts
 - Freehand Drawings
+- Messenger Integration

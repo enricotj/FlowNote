@@ -9,7 +9,6 @@ export function fetchNotes() {
 				querySnapshot.forEach((doc) => {
 					var data = {
 						id: doc.id,
-						title: doc.data().title,
 						body: doc.data().body
 					}
 					noteData.push(data);
@@ -41,7 +40,6 @@ export function createNote() {
 
 		ref.set({
 			author: app.auth().currentUser.uid,
-			title: "",
 			body: "",
 			modTime: fire.firestore.FieldValue.serverTimestamp()
 		})
@@ -58,7 +56,6 @@ export function createNote() {
 export function updateNote(note) {
 	return function(dispatch) {
 		db.collection("notes").doc(note.id).update({
-			title: note.title,
 			body: note.body,
 			modTime: fire.firestore.FieldValue.serverTimestamp()
 		})
