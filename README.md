@@ -7,3 +7,5 @@ Core Technologies:
 - Redux
 - Firebase
 - Flexbox
+
+Current Version Deployed Here: http://flownote.io
